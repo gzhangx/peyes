@@ -7,19 +7,19 @@ faceCascade = cv2.CascadeClassifier('./haarcascade_frontalface_alt.xml')
 eye_cascade = cv2.CascadeClassifier('./haarcascade_eye.xml')
 
 camera = picamera.PiCamera()
-from picamera.array import PiRGBArray
-rawCapture = PiRGBArray(camera)
+camera.resolution = (640, 480)
+camera.framerate = 32
+rawCapture = picamera.array(camera, size=(640, 480))
 import time
 
 # allow the camera to warmup
 time.sleep(0.1)
 #video_capture = cv2.VideoCapture(0)
-while True:
+for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
     # Capture frame-by-frame
     #ret, frame = video_capture.read()
-	# grab an image from the camera
-	camera.capture(rawCapture, format="bgr")
-	image = rawCapture.array
+    # grab an image from the camera
+    image = frame.array
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     faces = faceCascade.detectMultiScale(

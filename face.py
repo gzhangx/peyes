@@ -36,10 +36,15 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
     # Draw a rectangle around the faces
     for (x, y, w, h) in faces:
-        cv2.rectangle(gray, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        roi_gray = gray[y:y+h, x:x+w]
+        roi_color = image[y:y+h, x:x+w]
+        eyes = eye_cascade.detectMultiScale(roi_gray)
+        for (ex,ey,ew,eh) in eyes:
+            cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
 
     # Display the resulting frame
-    cv2.imshow('Video', gray)
+    cv2.imshow('Video', image)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

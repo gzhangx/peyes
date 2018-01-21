@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 import sys
 import picamera
+from picamera.array import PiRGBArray
 
 faceCascade = cv2.CascadeClassifier('./haarcascade_frontalface_alt.xml')
 eye_cascade = cv2.CascadeClassifier('./haarcascade_eye.xml')
@@ -9,7 +10,7 @@ eye_cascade = cv2.CascadeClassifier('./haarcascade_eye.xml')
 camera = picamera.PiCamera()
 camera.resolution = (640, 480)
 camera.framerate = 32
-rawCapture = picamera.array(camera, size=(640, 480))
+rawCapture = PiRGBArray(camera, size=(640, 480))
 import time
 
 # allow the camera to warmup
